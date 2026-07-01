@@ -1,0 +1,19 @@
+# Python
+backend/venv/
+backend/__pycache__/
+backend/**/*.pyc
+
+# Environment
+backend/.env
+
+# Uploads
+backend/uploads/
+
+# ML Model
+backend/ml/student_model.pkl
+
+# Node
+frontend/node_modules/
+
+# Vite
+frontend/dist/
