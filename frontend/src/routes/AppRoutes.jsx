@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import MainLayout from "../components/layout/MainLayout";
 import ProtectedRoute from "../components/ProtectedRoute";
-import PDFChat from "../pages/PDFChat";
+
 import Home from "../pages/Home";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
@@ -10,10 +10,12 @@ import Register from "../pages/Register";
 import StudentDashboard from "../pages/StudentDashboard";
 import FacultyDashboard from "../pages/FacultyDashboard";
 import AdminDashboard from "../pages/AdminDashboard";
-import Appointment from "../pages/Appointment";
-import Prediction from "../pages/Prediction";
+
 import Chat from "../pages/Chat";
 import ChatHistory from "../pages/ChatHistory";
+import Appointment from "../pages/Appointment";
+import Prediction from "../pages/Prediction";
+import PDFChat from "../pages/PDFChat";
 
 function AppRoutes() {
   return (
@@ -27,27 +29,42 @@ function AppRoutes() {
 
         {/* Protected Routes */}
         <Route element={<MainLayout />}>
-<Route
-  path="/pdf"
-  element={
-    <ProtectedRoute>
-      <PDFChat />
-    </ProtectedRoute>
-  }
-/>
+
+          {/* Student Dashboard */}
           <Route
             path="/student/dashboard"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute allowedRoles={["student"]}>
                 <StudentDashboard />
               </ProtectedRoute>
             }
           />
 
+          {/* Faculty Dashboard */}
+          <Route
+            path="/faculty/dashboard"
+            element={
+              <ProtectedRoute allowedRoles={["faculty"]}>
+                <FacultyDashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Admin Dashboard */}
+          <Route
+            path="/admin/dashboard"
+            element={
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Shared Features */}
           <Route
             path="/chat"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute allowedRoles={["student", "faculty"]}>
                 <Chat />
               </ProtectedRoute>
             }
@@ -56,7 +73,7 @@ function AppRoutes() {
           <Route
             path="/chat-history"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute allowedRoles={["student", "faculty"]}>
                 <ChatHistory />
               </ProtectedRoute>
             }
@@ -65,7 +82,7 @@ function AppRoutes() {
           <Route
             path="/appointment"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute allowedRoles={["student", "faculty"]}>
                 <Appointment />
               </ProtectedRoute>
             }
@@ -74,26 +91,17 @@ function AppRoutes() {
           <Route
             path="/prediction"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute allowedRoles={["student"]}>
                 <Prediction />
               </ProtectedRoute>
             }
           />
 
           <Route
-            path="/faculty/dashboard"
+            path="/pdf"
             element={
-              <ProtectedRoute>
-                <FacultyDashboard />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="/admin/dashboard"
-            element={
-              <ProtectedRoute>
-                <AdminDashboard />
+              <ProtectedRoute allowedRoles={["student", "faculty"]}>
+                <PDFChat />
               </ProtectedRoute>
             }
           />

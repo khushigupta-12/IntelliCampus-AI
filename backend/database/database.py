@@ -15,8 +15,12 @@ connection_url = URL.create(
     database=os.getenv("DB_NAME"),
 )
 
-engine = create_engine(connection_url)
-
+engine = create_engine(
+    connection_url,
+    connect_args={
+        "ssl": {}
+    }
+)
 SessionLocal = sessionmaker(
     autocommit=False,
     autoflush=False,

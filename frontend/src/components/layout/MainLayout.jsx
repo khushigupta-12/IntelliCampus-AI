@@ -1,4 +1,4 @@
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link, useNavigate } from "react-router-dom";
 import LogoutIcon from "@mui/icons-material/Logout";
 import {
   AppBar,
@@ -14,9 +14,18 @@ import {
 const drawerWidth = 240;
 
 function MainLayout() {
+  const navigate = useNavigate();
+
+  const role = localStorage.getItem("role");
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    navigate("/login");
+  };
+
   return (
     <Box sx={{ display: "flex" }}>
-
       <AppBar
         position="fixed"
         sx={{ zIndex: 1201 }}
@@ -41,45 +50,75 @@ function MainLayout() {
       >
         <List>
 
-          <ListItemButton component={Link} to="/student/dashboard">
-            <ListItemText primary="Dashboard" />
+          {/* Student Menu */}
+          {role === "student" && (
+            <>
+              <ListItemButton component={Link} to="/student/dashboard">
+                <ListItemText primary="Dashboard" />
+              </ListItemButton>
+
+              <ListItemButton component={Link} to="/chat">
+                <ListItemText primary="AI Chat" />
+              </ListItemButton>
+
+              <ListItemButton component={Link} to="/chat-history">
+                <ListItemText primary="Chat History" />
+              </ListItemButton>
+
+              <ListItemButton component={Link} to="/appointment">
+                <ListItemText primary="Appointments" />
+              </ListItemButton>
+
+              <ListItemButton component={Link} to="/prediction">
+                <ListItemText primary="Prediction" />
+              </ListItemButton>
+
+              <ListItemButton component={Link} to="/pdf">
+                <ListItemText primary="PDF AI" />
+              </ListItemButton>
+            </>
+          )}
+
+          {/* Faculty Menu */}
+          {role === "faculty" && (
+            <>
+              <ListItemButton component={Link} to="/faculty/dashboard">
+                <ListItemText primary="Dashboard" />
+              </ListItemButton>
+
+              <ListItemButton component={Link} to="/chat">
+                <ListItemText primary="AI Chat" />
+              </ListItemButton>
+
+              <ListItemButton component={Link} to="/chat-history">
+                <ListItemText primary="Chat History" />
+              </ListItemButton>
+
+              <ListItemButton component={Link} to="/appointment">
+                <ListItemText primary="Appointments" />
+              </ListItemButton>
+
+              <ListItemButton component={Link} to="/pdf">
+                <ListItemText primary="PDF AI" />
+              </ListItemButton>
+            </>
+          )}
+
+          {/* Admin Menu */}
+          {role === "admin" && (
+            <>
+              <ListItemButton component={Link} to="/admin/dashboard">
+                <ListItemText primary="Dashboard" />
+              </ListItemButton>
+            </>
+          )}
+
+          {/* Logout */}
+          <ListItemButton onClick={logout}>
+            <LogoutIcon sx={{ mr: 2 }} />
+            <ListItemText primary="Logout" />
           </ListItemButton>
 
-          <ListItemButton component={Link} to="/chat">
-            <ListItemText primary="AI Chat" />
-          </ListItemButton>
-<ListItemButton component={Link} to="/chat-history">
-    <ListItemText primary="Chat History" />
-</ListItemButton>
-          <ListItemButton component={Link} to="/appointment">
-            <ListItemText primary="Appointments" />
-          </ListItemButton>
-<ListItemButton component={Link} to="/pdf">
-    <ListItemText primary="PDF AI" />
-</ListItemButton>
-          <ListItemButton component={Link} to="/prediction">
-            <ListItemText primary="Prediction" />
-          </ListItemButton>
-
-          <ListItemButton component={Link} to="/faculty/dashboard">
-            <ListItemText primary="Faculty" />
-          </ListItemButton>
-
-          <ListItemButton component={Link} to="/admin/dashboard">
-            <ListItemText primary="Admin" />
-          </ListItemButton>
-<ListItemButton
-    onClick={() => {
-        localStorage.removeItem("token");
-        window.location.href = "/login";
-    }}
->
-
-    <LogoutIcon sx={{ mr: 2 }} />
-
-    <ListItemText primary="Logout" />
-
-</ListItemButton>
         </List>
       </Drawer>
 
@@ -94,7 +133,6 @@ function MainLayout() {
       >
         <Outlet />
       </Box>
-
     </Box>
   );
 }
