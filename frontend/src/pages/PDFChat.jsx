@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import api from "../services/api";
 
 function PDFChat() {
   const [file, setFile] = useState(null);
@@ -18,8 +18,8 @@ function PDFChat() {
     try {
       setLoading(true);
 
-      const res = await axios.post(
-        "http://127.0.0.1:8000/pdf/upload",
+      const res = await api.post(
+        "/pdf/upload",
         formData,
         {
           headers: {
@@ -30,7 +30,7 @@ function PDFChat() {
 
       setSummary(res.data.summary);
     } catch (err) {
-      console.log(err);
+      console.error(err);
       alert("Failed to upload PDF");
     } finally {
       setLoading(false);
@@ -54,8 +54,8 @@ function PDFChat() {
       <br />
       <br />
 
-      <button onClick={uploadPDF}>
-        Upload PDF
+      <button onClick={uploadPDF} disabled={loading}>
+        {loading ? "Uploading..." : "Upload PDF"}
       </button>
 
       <br />

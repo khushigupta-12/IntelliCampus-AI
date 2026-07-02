@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../services/api";
 
 import StatsCards from "../components/dashboard/StatsCards";
 import AnalyticsChart from "../components/dashboard/AnalyticsChart";
@@ -7,7 +7,6 @@ import AnalyticsChart from "../components/dashboard/AnalyticsChart";
 import { Typography } from "@mui/material";
 
 function AdminDashboard() {
-
   const [stats, setStats] = useState({});
 
   useEffect(() => {
@@ -15,18 +14,17 @@ function AdminDashboard() {
   }, []);
 
   const loadDashboard = async () => {
-
-    const res = await axios.get(
-      "http://127.0.0.1:8000/admin/dashboard"
-    );
-
-    setStats(res.data);
-
+    try {
+      const res = await api.get("/admin/dashboard");
+      setStats(res.data);
+    } catch (error) {
+      console.error(error);
+      alert("Failed to load dashboard.");
+    }
   };
 
   return (
     <div>
-
       <Typography
         variant="h4"
         fontWeight="bold"
@@ -38,10 +36,8 @@ function AdminDashboard() {
       <StatsCards />
 
       <AnalyticsChart stats={stats} />
-
     </div>
   );
-
 }
 
 export default AdminDashboard;

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import api from "../services/api";
 
 function Appointment() {
   const [form, setForm] = useState({
@@ -24,8 +24,8 @@ function Appointment() {
     e.preventDefault();
 
     try {
-      const res = await axios.post(
-        "http://127.0.0.1:8000/appointments/book",
+      const res = await api.post(
+        "/appointments/book",
         form
       );
 

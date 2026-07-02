@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../services/api";
 
 import {
   Grid,
@@ -23,10 +23,7 @@ function StatsCards() {
 
   const loadStats = async () => {
     try {
-      const res = await axios.get(
-        "http://127.0.0.1:8000/admin/dashboard"
-      );
-
+      const res = await api.get("/admin/dashboard");
       setStats(res.data);
     } catch (error) {
       console.error("Failed to load dashboard stats:", error);
@@ -73,17 +70,11 @@ function StatsCards() {
             }}
           >
             <CardContent>
-              <Typography
-                color="text.secondary"
-                gutterBottom
-              >
+              <Typography color="text.secondary" gutterBottom>
                 {card.title}
               </Typography>
 
-              <Typography
-                variant="h4"
-                fontWeight="bold"
-              >
+              <Typography variant="h4" fontWeight="bold">
                 {card.value}
               </Typography>
             </CardContent>

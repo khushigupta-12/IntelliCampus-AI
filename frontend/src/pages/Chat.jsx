@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import api from "../services/api";
 
 function Chat() {
   const [message, setMessage] = useState("");
@@ -13,27 +13,22 @@ function Chat() {
     setLoading(true);
 
     try {
-      const res = await axios.post(
-        "http://127.0.0.1:8000/chat/",
-        {
-          message
-        }
-      );
+      const res = await api.post("/chat/", {
+        message,
+      });
 
       setAnswer(res.data.answer);
       setFaculty(res.data.faculty);
-
     } catch (err) {
-      console.log(err);
+      console.error(err);
       alert("AI Error");
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   return (
     <div style={{ maxWidth: 900, margin: "40px auto" }}>
-
       <h1>IntelliCampus AI Assistant</h1>
 
       <textarea
@@ -44,35 +39,29 @@ function Chat() {
         onChange={(e) => setMessage(e.target.value)}
       />
 
-      <br /><br />
+      <br />
+      <br />
 
-      <button onClick={askAI}>
+      <button onClick={askAI} disabled={loading}>
         {loading ? "Thinking..." : "Ask AI"}
       </button>
 
-      <br /><br />
+      <br />
+      <br />
 
       {faculty && (
         <div
           style={{
             border: "1px solid gray",
             padding: 15,
-            borderRadius: 10
+            borderRadius: 10,
           }}
         >
           <h2>Recommended Faculty</h2>
 
-          <p>
-            <b>Name:</b> {faculty.name}
-          </p>
-
-          <p>
-            <b>Department:</b> {faculty.department}
-          </p>
-
-          <p>
-            <b>Subjects:</b> {faculty.subjects.join(", ")}
-          </p>
+          <p><b>Name:</b> {faculty.name}</p>
+          <p><b>Department:</b> {faculty.department}</p>
+          <p><b>Subjects:</b> {faculty.subjects.join(", ")}</p>
         </div>
       )}
 
@@ -83,15 +72,13 @@ function Chat() {
           style={{
             border: "1px solid green",
             padding: 20,
-            borderRadius: 10
+            borderRadius: 10,
           }}
         >
           <h2>AI Response</h2>
-
           <p>{answer}</p>
         </div>
       )}
-
     </div>
   );
 }

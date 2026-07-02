@@ -1,77 +1,63 @@
 import { useState } from "react";
-import axios from "axios";
+import api from "../services/api";
 
 function Prediction() {
+
   const [attendance, setAttendance] = useState("");
   const [internal, setInternal] = useState("");
   const [study, setStudy] = useState("");
-  const [cgpa, setCgpa] = useState("");
+  const [result, setResult] = useState("");
 
   const predict = async () => {
-    try {
-      const res = await axios.post(
-        "http://127.0.0.1:8000/prediction/",
-        {
-          attendance: Number(attendance),
-          study_hours: Number(study),
-          internal_marks: Number(internal),
-        }
-      );
+const res = await api.post("/prediction/", {
+  attendance: Number(attendance),
+  study_hours: Number(study),
+  internal_marks: Number(internal),
+});
 
-      setCgpa(res.data.predicted_cgpa);
-    } catch (error) {
-      alert("Prediction Failed");
-      console.log(error);
-    }
+    setResult(
+      `${res.data.prediction} (Score : ${res.data.score})`
+    );
+
   };
 
   return (
-    <div style={{ padding: 40 }}>
-      <h1>AI Performance Prediction</h1>
+    <div style={{padding:40}}>
+      <h1>Performance Prediction</h1>
 
       <input
-        type="number"
-        placeholder="Attendance (%)"
+        placeholder="Attendance %"
         value={attendance}
-        onChange={(e) => setAttendance(e.target.value)}
+        onChange={(e)=>setAttendance(e.target.value)}
       />
 
-      <br />
-      <br />
+      <br/><br/>
 
       <input
-        type="number"
         placeholder="Internal Marks"
         value={internal}
-        onChange={(e) => setInternal(e.target.value)}
+        onChange={(e)=>setInternal(e.target.value)}
       />
 
-      <br />
-      <br />
+      <br/><br/>
 
       <input
-        type="number"
-        placeholder="Study Hours per Day"
+        placeholder="Study Hours"
         value={study}
-        onChange={(e) => setStudy(e.target.value)}
+        onChange={(e)=>setStudy(e.target.value)}
       />
 
-      <br />
-      <br />
+      <br/><br/>
 
       <button onClick={predict}>
-        Predict CGPA
+        Predict
       </button>
 
-      {cgpa !== "" && (
-        <>
-          <br />
-          <br />
-          <h2>Predicted CGPA: {cgpa}</h2>
-        </>
-      )}
+      <h2>{result}</h2>
+
     </div>
   );
+
 }
 
 export default Prediction;
