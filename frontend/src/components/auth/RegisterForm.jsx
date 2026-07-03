@@ -28,10 +28,16 @@ function RegisterForm() {
             alert(res.data.message);
 
         } catch (err) {
+  console.log(err);
 
-            alert(err.response.data.detail);
-
-        }
+  if (err.response) {
+    console.log("Status:", err.response.status);
+    console.log("Data:", err.response.data);
+    alert(JSON.stringify(err.response.data));
+  } else {
+    alert(err.message);
+  }
+}
 
     };
 

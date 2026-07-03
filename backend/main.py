@@ -17,10 +17,7 @@ Base.metadata.create_all(bind=engine)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5173",
-        "https://intellicampus-frontend-vo6w.onrender.com",
-    ],
+    allow_origin_regex=r"https://.*\.onrender\.com",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -29,9 +26,10 @@ app.add_middleware(
 app.include_router(auth_router)
 app.include_router(appointment_router)
 app.include_router(prediction_router)
-app.include_router(chat_router)    
+app.include_router(chat_router)
 app.include_router(admin_router)
 app.include_router(pdf_router)
+
 @app.get("/")
 def root():
     return {
