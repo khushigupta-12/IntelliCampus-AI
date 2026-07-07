@@ -1,5 +1,5 @@
-import { Outlet, Link, useNavigate } from "react-router-dom";
-import LogoutIcon from "@mui/icons-material/Logout";
+import { Outlet, Link, useNavigate, useLocation } from "react-router-dom";
+
 import {
   AppBar,
   Toolbar,
@@ -7,14 +7,26 @@ import {
   Drawer,
   List,
   ListItemButton,
+  ListItemIcon,
   ListItemText,
   Box,
+  Avatar,
 } from "@mui/material";
 
-const drawerWidth = 240;
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import SmartToyIcon from "@mui/icons-material/SmartToy";
+import HistoryIcon from "@mui/icons-material/History";
+import EventIcon from "@mui/icons-material/Event";
+import AnalyticsIcon from "@mui/icons-material/Analytics";
+import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
+import LogoutIcon from "@mui/icons-material/Logout";
+import SchoolIcon from "@mui/icons-material/School";
+
+const drawerWidth = 260;
 
 function MainLayout() {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const role = localStorage.getItem("role");
 
@@ -24,18 +36,70 @@ function MainLayout() {
     navigate("/login");
   };
 
+  const studentMenu = [
+    { text: "Dashboard", icon: <DashboardIcon />, path: "/student/dashboard" },
+    { text: "AI Chat", icon: <SmartToyIcon />, path: "/chat" },
+    { text: "Chat History", icon: <HistoryIcon />, path: "/chat-history" },
+    { text: "Appointments", icon: <EventIcon />, path: "/appointment" },
+    { text: "Prediction", icon: <AnalyticsIcon />, path: "/prediction" },
+    { text: "PDF AI", icon: <PictureAsPdfIcon />, path: "/pdf" },
+  ];
+
+  const facultyMenu = [
+    { text: "Dashboard", icon: <DashboardIcon />, path: "/faculty/dashboard" },
+    { text: "AI Chat", icon: <SmartToyIcon />, path: "/chat" },
+    { text: "Chat History", icon: <HistoryIcon />, path: "/chat-history" },
+    { text: "Appointments", icon: <EventIcon />, path: "/appointment" },
+    { text: "PDF AI", icon: <PictureAsPdfIcon />, path: "/pdf" },
+  ];
+
+  const adminMenu = [
+    { text: "Dashboard", icon: <DashboardIcon />, path: "/admin/dashboard" },
+  ];
+
+  const menu =
+    role === "student"
+      ? studentMenu
+      : role === "faculty"
+      ? facultyMenu
+      : adminMenu;
+
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: "flex", background: "#f4f7fb", minHeight: "100vh" }}>
+      {/* ================= NAVBAR ================= */}
+
       <AppBar
         position="fixed"
-        sx={{ zIndex: 1201 }}
+        elevation={0}
+        sx={{
+          background: "#fff",
+          color: "#1e293b",
+          borderBottom: "1px solid #e5e7eb",
+          zIndex: 1300,
+        }}
       >
-        <Toolbar>
-          <Typography variant="h6">
+        <Toolbar sx={{ justifyContent: "space-between" }}>
+          <Typography
+            variant="h5"
+            fontWeight="bold"
+            color="primary"
+          >
             IntelliCampus AI
           </Typography>
+
+          <Box display="flex" alignItems="center" gap={2}>
+            <Avatar sx={{ bgcolor: "#2563eb" }}>
+              {role?.charAt(0).toUpperCase()}
+            </Avatar>
+
+            <Typography fontWeight={600}>
+              {role}
+            </Typography>
+          </Box>
         </Toolbar>
       </AppBar>
+
+      {/* ================= SIDEBAR ================= */}
 
       <Drawer
         variant="permanent"
@@ -43,92 +107,89 @@ function MainLayout() {
           width: drawerWidth,
           "& .MuiDrawer-paper": {
             width: drawerWidth,
-            boxSizing: "border-box",
-            marginTop: "64px",
+            background: "#0f172a",
+            color: "white",
+            border: "none",
           },
         }}
       >
-        <List>
+        <Toolbar />
 
-          {/* Student Menu */}
-          {role === "student" && (
-            <>
-              <ListItemButton component={Link} to="/student/dashboard">
-                <ListItemText primary="Dashboard" />
+        <Box sx={{ p: 3 }}>
+          <Box
+            display="flex"
+            alignItems="center"
+            gap={1}
+            mb={4}
+          >
+            <SchoolIcon sx={{ fontSize: 35 }} />
+            <Typography
+              fontWeight="bold"
+              fontSize={22}
+            >
+              IntelliCampus
+            </Typography>
+          </Box>
+
+          <List>
+            {menu.map((item) => (
+              <ListItemButton
+                key={item.text}
+                component={Link}
+                to={item.path}
+                selected={location.pathname === item.path}
+                sx={{
+                  borderRadius: 3,
+                  mb: 1,
+                  color: "white",
+
+                  "&.Mui-selected": {
+                    background: "#2563eb",
+                  },
+
+                  "&:hover": {
+                    background: "#1e40af",
+                  },
+                }}
+              >
+                <ListItemIcon sx={{ color: "white" }}>
+                  {item.icon}
+                </ListItemIcon>
+
+                <ListItemText primary={item.text} />
               </ListItemButton>
+            ))}
 
-              <ListItemButton component={Link} to="/chat">
-                <ListItemText primary="AI Chat" />
-              </ListItemButton>
+            <ListItemButton
+              onClick={logout}
+              sx={{
+                borderRadius: 3,
+                mt: 3,
+                color: "#ffb4b4",
 
-              <ListItemButton component={Link} to="/chat-history">
-                <ListItemText primary="Chat History" />
-              </ListItemButton>
+                "&:hover": {
+                  background: "#7f1d1d",
+                },
+              }}
+            >
+              <ListItemIcon sx={{ color: "#ffb4b4" }}>
+                <LogoutIcon />
+              </ListItemIcon>
 
-              <ListItemButton component={Link} to="/appointment">
-                <ListItemText primary="Appointments" />
-              </ListItemButton>
-
-              <ListItemButton component={Link} to="/prediction">
-                <ListItemText primary="Prediction" />
-              </ListItemButton>
-
-              <ListItemButton component={Link} to="/pdf">
-                <ListItemText primary="PDF AI" />
-              </ListItemButton>
-            </>
-          )}
-
-          {/* Faculty Menu */}
-          {role === "faculty" && (
-            <>
-              <ListItemButton component={Link} to="/faculty/dashboard">
-                <ListItemText primary="Dashboard" />
-              </ListItemButton>
-
-              <ListItemButton component={Link} to="/chat">
-                <ListItemText primary="AI Chat" />
-              </ListItemButton>
-
-              <ListItemButton component={Link} to="/chat-history">
-                <ListItemText primary="Chat History" />
-              </ListItemButton>
-
-              <ListItemButton component={Link} to="/appointment">
-                <ListItemText primary="Appointments" />
-              </ListItemButton>
-
-              <ListItemButton component={Link} to="/pdf">
-                <ListItemText primary="PDF AI" />
-              </ListItemButton>
-            </>
-          )}
-
-          {/* Admin Menu */}
-          {role === "admin" && (
-            <>
-              <ListItemButton component={Link} to="/admin/dashboard">
-                <ListItemText primary="Dashboard" />
-              </ListItemButton>
-            </>
-          )}
-
-          {/* Logout */}
-          <ListItemButton onClick={logout}>
-            <LogoutIcon sx={{ mr: 2 }} />
-            <ListItemText primary="Logout" />
-          </ListItemButton>
-
-        </List>
+              <ListItemText primary="Logout" />
+            </ListItemButton>
+          </List>
+        </Box>
       </Drawer>
+
+      {/* ================= PAGE ================= */}
 
       <Box
         component="main"
         sx={{
           flexGrow: 1,
-          p: 3,
-          marginTop: "70px",
-          marginLeft: "240px",
+          p: 5,
+          mt: 8,
         }}
       >
         <Outlet />

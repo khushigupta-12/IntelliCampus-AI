@@ -1,82 +1,101 @@
+import SmartToyIcon from "@mui/icons-material/SmartToy";
+import EventAvailableIcon from "@mui/icons-material/EventAvailable";
+import AnalyticsIcon from "@mui/icons-material/Analytics";
+import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
+import SchoolIcon from "@mui/icons-material/School";
+import SecurityIcon from "@mui/icons-material/Security";
+
 function Features() {
+
+  const features = [
+    {
+      icon: <SmartToyIcon sx={{ fontSize: 45, color: "#2563eb" }} />,
+      title: "AI Academic Assistant",
+      description:
+        "Get instant answers to academic queries using Google Gemini AI with contextual and intelligent responses.",
+    },
+    {
+      icon: <EventAvailableIcon sx={{ fontSize: 45, color: "#16a34a" }} />,
+      title: "Smart Appointment Booking",
+      description:
+        "Book faculty appointments, manage schedules, and avoid conflicts with an organized scheduling system.",
+    },
+    {
+      icon: <AnalyticsIcon sx={{ fontSize: 45, color: "#ea580c" }} />,
+      title: "Performance Prediction",
+      description:
+        "Predict student academic performance using AI models based on attendance and academic inputs.",
+    },
+    {
+      icon: <PictureAsPdfIcon sx={{ fontSize: 45, color: "#9333ea" }} />,
+      title: "PDF AI Assistant",
+      description:
+        "Upload study material and ask questions directly from PDF documents using AI-powered analysis.",
+    },
+    {
+      icon: <SchoolIcon sx={{ fontSize: 45, color: "#0891b2" }} />,
+      title: "Faculty Recommendation",
+      description:
+        "Receive faculty recommendations based on subject expertise and academic requirements.",
+    },
+    {
+      icon: <SecurityIcon sx={{ fontSize: 45, color: "#dc2626" }} />,
+      title: "Secure Authentication",
+      description:
+        "Role-Based Access Control with JWT authentication ensures secure access for Students, Faculty, and Admin.",
+    },
+  ];
+
   return (
     <section
       id="features"
-      className="py-24 bg-white"
+      className="py-24 bg-slate-50"
     >
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-7xl mx-auto px-8">
 
-        <h2 className="text-5xl font-bold text-center">
+        <div className="text-center">
 
-          Platform Features
+          <h2 className="text-5xl font-bold text-gray-900">
+            Everything You Need in One Platform
+          </h2>
 
-        </h2>
+          <p className="text-xl text-gray-600 mt-6 max-w-3xl mx-auto">
+            IntelliCampus AI combines Artificial Intelligence, smart scheduling,
+            analytics, and secure campus management into one modern platform.
+          </p>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mt-16">
+        </div>
 
-          <div className="shadow-lg rounded-xl p-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16">
 
-            <h3 className="text-xl font-bold">
+          {features.map((feature, index) => (
 
-              🤖 AI Assistant
+            <div
+              key={index}
+              className="bg-white rounded-3xl shadow-lg p-8 hover:-translate-y-2 hover:shadow-2xl transition duration-300"
+            >
 
-            </h3>
+              <div className="w-20 h-20 rounded-full bg-slate-100 flex items-center justify-center">
 
-            <p className="mt-4">
+                {feature.icon}
 
-              Academic guidance powered by Gemini.
+              </div>
 
-            </p>
+              <h3 className="text-2xl font-bold mt-6">
 
-          </div>
+                {feature.title}
 
-          <div className="shadow-lg rounded-xl p-8">
+              </h3>
 
-            <h3 className="text-xl font-bold">
+              <p className="text-gray-600 mt-4 leading-8">
 
-              📅 Scheduling
+                {feature.description}
 
-            </h3>
+              </p>
 
-            <p className="mt-4">
+            </div>
 
-              Smart faculty appointment booking.
-
-            </p>
-
-          </div>
-
-          <div className="shadow-lg rounded-xl p-8">
-
-            <h3 className="text-xl font-bold">
-
-              📊 Analytics
-
-            </h3>
-
-            <p className="mt-4">
-
-              Appointment statistics and reports.
-
-            </p>
-
-          </div>
-
-          <div className="shadow-lg rounded-xl p-8">
-
-            <h3 className="text-xl font-bold">
-
-              🧠 Prediction
-
-            </h3>
-
-            <p className="mt-4">
-
-              Busy slot prediction using Machine Learning.
-
-            </p>
-
-          </div>
+          ))}
 
         </div>
 
