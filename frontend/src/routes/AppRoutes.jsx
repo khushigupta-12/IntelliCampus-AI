@@ -61,15 +61,14 @@ function AppRoutes() {
           />
 
           {/* Shared Features */}
-          <Route
-            path="/chat"
-            element={
-              <ProtectedRoute allowedRoles={["student", "faculty"]}>
-                <Chat />
-              </ProtectedRoute>
-            }
-          />
-
+         <Route
+  path="/chat"
+  element={
+    <ProtectedRoute allowedRoles={["student", "faculty", "admin"]}>
+      <Chat />
+    </ProtectedRoute>
+  }
+/>
           <Route
             path="/chat-history"
             element={
